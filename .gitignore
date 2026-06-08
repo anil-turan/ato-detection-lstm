@@ -1,0 +1,17 @@
+# Büyük veri dosyaları (GitHub'a yüklenmez)
+data/raw/
+data/processed/*.npy
+data/processed/*.parquet
+
+# Büyük model dosyaları
+outputs/models/*.keras
+
+# Python geçici dosyaları
+__pycache__/
+*.pyc
+
+# Claude / editör / sistem
+.claude/
+.DS_Store
+.Rhistory
+.ipynb_checkpoints/

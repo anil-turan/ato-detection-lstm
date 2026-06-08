@@ -1,0 +1,83 @@
+{
+  "note": "Baselines only (sklearn). LSTM not included - see run_pipeline for the LSTM.",
+  "test_size": 118963,
+  "test_positives": 442,
+  "model_scores": {
+    "Random Forest": {
+      "roc_auc": 0.917,
+      "pr_auc": 0.0269
+    },
+    "Isolation Forest": {
+      "roc_auc": 0.8627,
+      "pr_auc": 0.0183
+    }
+  },
+  "random_forest_threshold_sweep": [
+    {
+      "threshold": 0.3,
+      "precision": 0.0301,
+      "recall": 0.1719,
+      "f1": 0.0513
+    },
+    {
+      "threshold": 0.4,
+      "precision": 0.0239,
+      "recall": 0.043,
+      "f1": 0.0307
+    },
+    {
+      "threshold": 0.5,
+      "precision": 0.0145,
+      "recall": 0.0068,
+      "f1": 0.0092
+    },
+    {
+      "threshold": 0.6,
+      "precision": 0.0286,
+      "recall": 0.0023,
+      "f1": 0.0042
+    },
+    {
+      "threshold": 0.7,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    {
+      "threshold": 0.8,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    {
+      "threshold": 0.9,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    }
+  ],
+  "random_forest_best_f1": {
+    "threshold": 0.16,
+    "precision": 0.03,
+    "recall": 0.6131,
+    "f1": 0.0572,
+    "confusion_matrix": [
+      [
+        109756,
+        8765
+      ],
+      [
+        171,
+        271
+      ]
+    ]
+  },
+  "random_forest_at_recall_0.90": {
+    "target_recall": 0.9,
+    "reachable": true,
+    "threshold": 0.055,
+    "precision": 0.02,
+    "recall": 0.9072,
+    "f1": 0.0392
+  }
+}

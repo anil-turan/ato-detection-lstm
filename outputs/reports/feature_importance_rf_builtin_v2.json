@@ -1,0 +1,130 @@
+[
+  {
+    "feature": "id_17",
+    "importance": 0.329323
+  },
+  {
+    "feature": "DeviceType_enc",
+    "importance": 0.261571
+  },
+  {
+    "feature": "id_02",
+    "importance": 0.051969
+  },
+  {
+    "feature": "id_19",
+    "importance": 0.043398
+  },
+  {
+    "feature": "DeviceInfo_enc",
+    "importance": 0.040875
+  },
+  {
+    "feature": "id_20",
+    "importance": 0.030545
+  },
+  {
+    "feature": "TransactionAmt",
+    "importance": 0.027985
+  },
+  {
+    "feature": "card6_enc",
+    "importance": 0.027289
+  },
+  {
+    "feature": "txn_count_rolling",
+    "importance": 0.026285
+  },
+  {
+    "feature": "account_age_dt",
+    "importance": 0.023348
+  },
+  {
+    "feature": "amt_deviation",
+    "importance": 0.021877
+  },
+  {
+    "feature": "hour_of_day",
+    "importance": 0.021337
+  },
+  {
+    "feature": "id_06",
+    "importance": 0.0175
+  },
+  {
+    "feature": "id_13",
+    "importance": 0.013255
+  },
+  {
+    "feature": "id_01",
+    "importance": 0.013078
+  },
+  {
+    "feature": "id_05",
+    "importance": 0.012661
+  },
+  {
+    "feature": "id_32",
+    "importance": 0.006566
+  },
+  {
+    "feature": "id_14",
+    "importance": 0.004733
+  },
+  {
+    "feature": "id_18",
+    "importance": 0.003161
+  },
+  {
+    "feature": "id_11",
+    "importance": 0.003132
+  },
+  {
+    "feature": "card4_enc",
+    "importance": 0.002741
+  },
+  {
+    "feature": "id_07",
+    "importance": 0.00267
+  },
+  {
+    "feature": "id_26",
+    "importance": 0.002261
+  },
+  {
+    "feature": "id_24",
+    "importance": 0.001995
+  },
+  {
+    "feature": "id_08",
+    "importance": 0.001958
+  },
+  {
+    "feature": "id_21",
+    "importance": 0.001808
+  },
+  {
+    "feature": "id_09",
+    "importance": 0.00134
+  },
+  {
+    "feature": "id_25",
+    "importance": 0.001192
+  },
+  {
+    "feature": "id_03",
+    "importance": 0.001173
+  },
+  {
+    "feature": "id_10",
+    "importance": 0.001133
+  },
+  {
+    "feature": "id_04",
+    "importance": 0.001085
+  },
+  {
+    "feature": "id_22",
+    "importance": 0.000756
+  }
+]
