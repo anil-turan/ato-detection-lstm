@@ -105,17 +105,20 @@ def _clean_numeric(df: pd.DataFrame, feature_cols: list) -> pd.DataFrame:
 def _build_sequences(df: pd.DataFrame, feature_cols: list):
     """Make sliding-window sequences, keeping each card on one side of the split.
 
-    Returns X (samples, WINDOW_SIZE, n_features), y (samples,) and the matching
-    uid for every sample (so we can split by card).
+    Returns X (samples, WINDOW_SIZE, n_features), y (samples,), the matching
+    uid for every sample, and the TransactionID of the latest step in each
+    sequence. The TransactionID is what lets the rest of the group join our
+    risk scores onto their own outputs.
     """
     window = config.WINDOW_SIZE
     n_feat = len(feature_cols)
 
-    seqs, labels, owner_uid = [], [], []
+    seqs, labels, owner_uid, txn_ids = [], [], [], []
     for uid, group in df.groupby("uid"):
         group = group.sort_values("TransactionDT")
         feats = group[feature_cols].to_numpy(dtype="float32")
         ys = group["ato_proxy"].to_numpy()
+        tids = group["TransactionID"].to_numpy()
         if len(group) < 2:
             continue  # a single transaction has no history to learn from
         for i in range(1, len(group)):
@@ -127,11 +130,13 @@ def _build_sequences(df: pd.DataFrame, feature_cols: list):
             seqs.append(seq)
             labels.append(ys[i])
             owner_uid.append(uid)
+            txn_ids.append(tids[i])  # id of the transaction being scored
 
     X = np.asarray(seqs, dtype="float32")
     y = np.asarray(labels, dtype="int8")
     owner_uid = np.asarray(owner_uid)
-    return X, y, owner_uid
+    txn_ids = np.asarray(txn_ids, dtype="int64")
+    return X, y, owner_uid, txn_ids
 
 
 def run() -> dict:
@@ -179,13 +184,16 @@ def run() -> dict:
     print("[features] building sequences (this can take a minute) ...")
     df_train = df[df["uid"].isin(set(train_uids))]
     df_test = df[df["uid"].isin(set(test_uids))]
-    X_train, y_train, _ = _build_sequences(df_train, feature_cols)
-    X_test, y_test, _ = _build_sequences(df_test, feature_cols)
+    X_train, y_train, _, ids_train = _build_sequences(df_train, feature_cols)
+    X_test, y_test, _, ids_test = _build_sequences(df_test, feature_cols)
 
     np.save(config.PROCESSED_DIR / "X_train.npy", X_train)
     np.save(config.PROCESSED_DIR / "y_train.npy", y_train)
     np.save(config.PROCESSED_DIR / "X_test.npy", X_test)
     np.save(config.PROCESSED_DIR / "y_test.npy", y_test)
+    # TransactionID per sequence, so group members can join on it.
+    np.save(config.PROCESSED_DIR / "txn_ids_train.npy", ids_train)
+    np.save(config.PROCESSED_DIR / "txn_ids_test.npy", ids_test)
     with open(config.PROCESSED_DIR / "feature_cols.txt", "w") as f:
         f.write("\n".join(feature_cols))
 

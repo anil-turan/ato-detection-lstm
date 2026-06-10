@@ -74,15 +74,17 @@ def export_scores_for_group(backend: str = "rf", out_path=None) -> pd.DataFrame:
     """Score the held-out test set and save a table for the group system.
 
     The output columns are what Risa's dashboard and Humaun's transaction model
-    need: a row id, the 0-100 ATO risk score, and the recommended action.
+    need. TransactionID is the shared join key across the whole group system:
+    Humaun's transaction model and Risa's dashboard merge on it.
     """
     X_test = np.load(config.PROCESSED_DIR / "X_test.npy")
+    txn_ids = np.load(config.PROCESSED_DIR / "txn_ids_test.npy")
 
     risk = score_sequences(X_test, backend=backend)
     actions = decide(risk, backend=backend)
 
     out = pd.DataFrame({
-        "sequence_id": np.arange(len(risk)),
+        "TransactionID": txn_ids,        # join key for the group system
         "ato_risk_score": risk,          # 0-100, higher = riskier
         "recommended_action": actions,   # allow / step_up_auth / block
     })
