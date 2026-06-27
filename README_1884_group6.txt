@@ -1,15 +1,3 @@
-================================================================================
-COMP1884 GROUP PROJECT - GROUP 6
-Real-Time Fraud Detection for Digital Payments
-Sub-topic (this folder): Account Takeover (ATO) Detection Through Behavioural
-                         Analytics - Anil Turan (Banner ID 001455222)
-================================================================================
-
-This README explains how to access / re-create the data sources and how to run
-the code in this folder. It is the file required by the COMP1884 report
-specification (README_1884_groupX.txt).
-
-
 --------------------------------------------------------------------------------
 1. WHAT THIS CODE DOES
 --------------------------------------------------------------------------------
@@ -93,7 +81,7 @@ Outputs are written to:
    docs/METHODOLOGY_AND_LIMITATIONS.md   full method + honest limitations
    README.md                     detailed project overview
 
-GitHub (private): https://github.com/anil-turan/ato-detection-lstm
+GitHub: https://github.com/anil-turan/ato-detection-lstm
 
 
 --------------------------------------------------------------------------------
@@ -109,6 +97,3 @@ GitHub (private): https://github.com/anil-turan/ato-detection-lstm
  - The old notebooks (notebooks/) are kept only to show the project's history.
    They contain the leaky earlier version. The trustworthy system is src/.
 
-================================================================================
-Contact: Anil Turan, Group 6, COMP1884, University of Greenwich.
-================================================================================
