@@ -1,8 +1,5 @@
 # Account Takeover (ATO) Detection Through Behavioural Analytics
 
-Individual sub-topic of **Group 6 – Real-Time Fraud Detection for Digital Payments**
-(University of Greenwich, MSc Data Science, COMP1889).
-
 This repo detects likely **account-takeover** transactions in the IEEE-CIS Fraud
 Detection dataset using a sequence model (LSTM) over each card's recent
 transaction history, compared against Random Forest and Isolation Forest
