@@ -1,0 +1,4 @@
+# Treat notebooks as documentation so GitHub's language bar reflects the
+# actual Python source in src/ and tests/ rather than the embedded notebook
+# outputs (which would otherwise dominate as "Jupyter Notebook").
+*.ipynb linguist-documentation

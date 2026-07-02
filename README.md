@@ -1,5 +1,12 @@
 # Account Takeover (ATO) Detection Through Behavioural Analytics
 
+[![Python](https://img.shields.io/badge/python-3.11-blue)](https://www.python.org/)
+[![TensorFlow](https://img.shields.io/badge/TensorFlow-2.20-FF6F00)](https://www.tensorflow.org/)
+[![scikit-learn](https://img.shields.io/badge/scikit--learn-1.8-F7931E)](https://scikit-learn.org/)
+[![imbalanced-learn](https://img.shields.io/badge/imbalanced--learn-0.14-3499CD)](https://imbalanced-learn.org/)
+[![pandas](https://img.shields.io/badge/pandas-2.3-150458)](https://pandas.pydata.org/)
+[![SHAP](https://img.shields.io/badge/SHAP-0.44-8C4FFF)](https://shap.readthedocs.io/)
+
 This repo detects likely **account-takeover** transactions in the IEEE-CIS Fraud
 Detection dataset using a sequence model (LSTM) over each card's recent
 transaction history, compared against Random Forest and Isolation Forest
