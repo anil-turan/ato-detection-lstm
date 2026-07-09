@@ -1,7 +1,7 @@
 """
 Explain which features drive the predictions.
 
-The proposal promised feature importance for the FCA/GDPR audit trail. We explain
+Feature importance matters here for the FCA/GDPR audit trail. We explain
 a Random Forest because tree models are fast and exact to explain.
 
 Each sequence is 10 time-steps x N features flattened into one long row, so a

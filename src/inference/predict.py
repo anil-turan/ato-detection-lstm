@@ -1,15 +1,15 @@
 """
 Turn a trained model into a usable ATO risk scorer.
 
-This module does two things the proposal promised:
+This module does two things:
   1. Give each session/sequence a risk score from 0 to 100 (real-time scoring).
   2. Turn that score into an action using a two-tier policy:
         score >= BLOCK_AT   -> "block"
         score >= VERIFY_AT  -> "step_up_auth"  (ask for extra verification)
         otherwise           -> "allow"
 
-It exports a small table of scores that the rest of the group system (Humaun's
-transaction model and Risa's dashboard) can read.
+It exports a small scored table that a downstream case-management system or
+monitoring dashboard can read, joined on TransactionID.
 
 There are two backends:
   - "rf"  : Random Forest (default). Works anywhere, no TensorFlow needed.
@@ -70,12 +70,11 @@ def decide(risk_0_100: np.ndarray, backend: str = "rf") -> np.ndarray:
                     np.where(risk_0_100 >= verify, "step_up_auth", "allow"))
 
 
-def export_scores_for_group(backend: str = "rf", out_path=None) -> pd.DataFrame:
-    """Score the held-out test set and save a table for the group system.
+def export_risk_scores(backend: str = "rf", out_path=None) -> pd.DataFrame:
+    """Score the held-out test set and save a table for downstream consumers
+    (a case-management system or monitoring dashboard).
 
-    The output columns are what Risa's dashboard and Humaun's transaction model
-    need. TransactionID is the shared join key across the whole group system:
-    Humaun's transaction model and Risa's dashboard merge on it.
+    TransactionID is the join key any downstream consumer would merge on.
     """
     X_test = np.load(config.PROCESSED_DIR / "X_test.npy")
     txn_ids = np.load(config.PROCESSED_DIR / "txn_ids_test.npy")
@@ -84,7 +83,7 @@ def export_scores_for_group(backend: str = "rf", out_path=None) -> pd.DataFrame:
     actions = decide(risk, backend=backend)
 
     out = pd.DataFrame({
-        "TransactionID": txn_ids,        # join key for the group system
+        "TransactionID": txn_ids,        # join key for downstream consumers
         "ato_risk_score": risk,          # 0-100, higher = riskier
         "recommended_action": actions,   # allow / step_up_auth / block
     })
@@ -100,4 +99,4 @@ def export_scores_for_group(backend: str = "rf", out_path=None) -> pd.DataFrame:
 
 
 if __name__ == "__main__":
-    export_scores_for_group(backend="rf")
+    export_risk_scores(backend="rf")

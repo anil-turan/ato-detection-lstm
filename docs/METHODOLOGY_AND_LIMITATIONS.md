@@ -1,8 +1,7 @@
 # Methodology & Limitations — ATO Detection
 
-This note documents the methodology decisions and the honest limitations of the
-ATO sub-topic. It is written to be dropped almost directly into the group report
-(Methodology / Discussion / Limitations sections).
+This note documents the methodology decisions and the honest limitations of
+this ATO detection project.
 
 ---
 
@@ -45,7 +44,7 @@ stay high while the practically-relevant precision stays poor.
 
 ## 2. Honesty about the features ("behavioural biometrics")
 
-The proposal slides describe behavioural signals such as *typing cadence,
+The initial design brief describes behavioural signals such as *typing cadence,
 navigation-path entropy, device fingerprint and login time-of-day*. **The
 IEEE-CIS dataset does not contain these.** It is a transaction dataset, not a
 session/keystroke dataset.
@@ -102,14 +101,14 @@ Real **LSTM** operating points (from `evaluation_v2.json`):
 | Best F1 | 0.95 | 0.07 | 0.049 |
 | Catch ~90% of attacks | 0.45 | 0.90 | 0.019 |
 
-Reaching the proposal's 90% recall target collapses precision to ~2% — the model
+Reaching the 90% recall target collapses precision to ~2% — the model
 flags a large number of sessions to catch most attacks, which would flood
-analysts. So the proposal target (recall > 0.90 at useful precision) is **not
-met** on a fair evaluation — and the report should say so. (The Random Forest
+analysts. So the target (recall > 0.90 at useful precision) is **not
+met** on a fair evaluation — and this document says so plainly. (The Random Forest
 behaves the same way: at ~90% recall its precision is ~2% too.)
 
 **Suggested operating policy (instead of one threshold):** a two-tier rule that
-matches the proposal's "step-up authentication" idea:
+matches the planned "step-up authentication" idea:
 
 - **High score → block** the session outright.
 - **Medium score → step-up authentication** (ask for MFA / extra verification).
@@ -134,7 +133,7 @@ behind on ROC-AUC — so neither model clearly wins. Likely reasons:
 - The LSTM is trained with undersampling and a modest epoch budget; more tuning
   could help.
 
-That the LSTM does not beat a simple baseline does not invalidate the sub-topic —
+That the LSTM does not beat a simple baseline does not invalidate the approach —
 it is an honest, evidence-based outcome: on this dataset, for this proxy task, the
 sequence approach is limited by short per-card histories. The contribution is the
 *method* (leak-free sequence modelling of recent activity for ATO, with an

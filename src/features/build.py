@@ -191,7 +191,7 @@ def run() -> dict:
     np.save(config.PROCESSED_DIR / "y_train.npy", y_train)
     np.save(config.PROCESSED_DIR / "X_test.npy", X_test)
     np.save(config.PROCESSED_DIR / "y_test.npy", y_test)
-    # TransactionID per sequence, so group members can join on it.
+    # TransactionID per sequence, so downstream consumers can join on it.
     np.save(config.PROCESSED_DIR / "txn_ids_train.npy", ids_train)
     np.save(config.PROCESSED_DIR / "txn_ids_test.npy", ids_test)
     with open(config.PROCESSED_DIR / "feature_cols.txt", "w") as f:
