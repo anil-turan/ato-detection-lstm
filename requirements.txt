@@ -10,3 +10,7 @@ imbalanced-learn==0.14.1
 matplotlib==3.10.8
 pyarrow==23.0.1
 shap>=0.44
+
+# dev/test only
+pytest>=8.0
+ruff>=0.4

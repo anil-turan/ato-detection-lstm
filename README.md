@@ -60,11 +60,18 @@ parquet files in `data/processed/`.
 | `src/models/lstm.py` | The LSTM model and its training loop (class weights for imbalance). |
 | `src/models/baselines.py` | Random Forest + Isolation Forest baselines (balanced). |
 | `src/evaluation/metrics.py` | ROC-AUC, PR-AUC, threshold sweep, recall-target threshold, plots. |
+| `src/monitoring/drift.py` | PSI/KS feature + score drift detection, retraining recommendation. |
 | `src/run_pipeline.py` | Runs everything end to end and writes the results. |
 
 Outputs are written to `outputs/`:
 `outputs/models/lstm_v2_*.keras`, `outputs/figures/*_v2_*.png`,
 `outputs/reports/evaluation_v2.json`, `outputs/reports/results_table_v2.md`.
+
+**Tests:** `tests/` covers labeling (all 3 behavioural signals + the
+fraud-AND-2-signals rule), feature building (leak-free column selection,
+sequence padding), models (class weights, undersampling, RF/IsolationForest/
+LSTM), evaluation metrics, the inference decision policy, and drift
+monitoring — 45 tests, run with `pytest tests/ -v`.
 
 ---
 
@@ -152,3 +159,33 @@ so the non-LSTM parts still work even if TensorFlow is missing.
 - The scaler is fit on training rows only and saved to `outputs/scaler_v2.pkl`.
 - Imputation medians (train only) are saved to `outputs/imputation_medians_v2.csv`.
 - Pinned dependency versions are in `requirements.txt`.
+
+---
+
+## 8. Model monitoring: feature & score drift
+
+`notebooks/07_drift_monitoring.ipynb` / `src/monitoring/drift.py` -- fraud
+is adversarial in a way most drift-monitoring targets aren't: attackers
+actively adapt to evade a fixed model, on top of legitimate traffic
+(transaction values, device mix, time-of-day) drifting on its own. PSI and
+KS (both from scratch, KS verified against `scipy.stats.ks_2samp` to
+1e-9) are computed per-feature and on the model's own risk score, using
+the standard Siddiqi (2006) alarm bands: **< 0.10 stable, 0.10-0.25
+moderate, > 0.25 significant**.
+
+Run on `data/sample/df_sample_5000.csv`, holding out half as a genuinely
+out-of-sample reference (scoring a model on its own training rows
+collapses probabilities to ~0/1 at this dataset's 0.4% fraud rate, which
+breaks PSI/KS binning -- an Isolation Forest anomaly score is used as the
+monitored signal for the same reason):
+
+| Scenario | Score PSI | Top drifted features | Recommendation |
+|---|---|---|---|
+| **Drifted production batch** (simulated: transaction-value hike, off-hours shift, unfamiliar devices) | **0.263 (significant)** | `hour_of_day`, `DeviceInfo_enc`, `TransactionAmt`, `amt_deviation` | **`retrain_now`** |
+| Control batch (no injected drift) | 0.005 (stable) | none | `no_action` |
+
+The monitor stays quiet on the untouched control batch and fires clearly
+on the drifted one -- `retraining_recommendation()` turns per-feature and
+score PSI into a concrete `retrain_now` / `investigate` / `no_action`
+decision, including flagging a feature that's already drifted
+significantly even while the aggregate score still looks stable.
