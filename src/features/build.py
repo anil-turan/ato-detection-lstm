@@ -107,8 +107,8 @@ def _build_sequences(df: pd.DataFrame, feature_cols: list):
 
     Returns X (samples, WINDOW_SIZE, n_features), y (samples,), the matching
     uid for every sample, and the TransactionID of the latest step in each
-    sequence. The TransactionID is what lets the rest of the group join our
-    risk scores onto their own outputs.
+    sequence. The TransactionID is what lets a downstream consumer join
+    these risk scores onto their own outputs.
     """
     window = config.WINDOW_SIZE
     n_feat = len(feature_cols)
